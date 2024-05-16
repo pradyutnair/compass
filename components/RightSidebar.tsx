@@ -7,7 +7,7 @@ const RightSidebar = ({user, transactions, banks}: RightSidebarProps) => {
     return (
         // Profile details
         <aside className="right-sidebar">
-            <section className="flex flex-col pb-8">
+            <section className="flex flex-col pb-1">
                 <div className="profile-banner"/>
                 <div className="profile">
                     <div className="profile-img">
