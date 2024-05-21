@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -10,8 +9,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signup } from "@/lib/auth-actions";
+// import { signup } from "@/lib/auth-actions";        THIS IS FOR SUPABASE
+import {getLoggedInUser, signUpWithEmail} from "@/lib/user-actions";
+import {redirect} from "next/navigation"; // THIS IS FOR APPWRITE
 
+// Sign up form
 export function SignUpForm() {
     return (
         <Card className="mx-auto max-w-sm">
@@ -56,9 +58,9 @@ export function SignUpForm() {
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input name="password" id="password" type="password" />
+                            <Input name="password" id="password" type="password"/>
                         </div>
-                        <Button formAction={signup} type="submit" className="w-full">
+                        <Button formAction={signUpWithEmail} type="submit" className="w-full">
                             Create an account
                         </Button>
                     </div>
