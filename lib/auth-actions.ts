@@ -1,9 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import {revalidatePath} from "next/cache";
+import {redirect} from "next/navigation";
 
-import { createClient } from "@/utils/supabase/server";
+import {createClient} from "@/utils/supabase/server";
 
 export async function login(formData: FormData) {
     const supabase = createClient();
@@ -82,4 +82,11 @@ export async function signInWithGoogle() {
     }
 
     redirect(data.url);
+}
+
+export async function retrieveCurrentUser() {
+    const supabase = createClient();
+    const user = await supabase.auth.getUser();
+    console.log("User from retrieveCurrentUser:", user);
+    return user;
 }

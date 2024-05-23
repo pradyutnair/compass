@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 // import { signup } from "@/lib/auth-actions";        THIS IS FOR SUPABASE
-import {getLoggedInUser, signUpWithEmail} from "@/lib/user-actions";
+import {getLoggedInUser, signUpWithEmail} from "@/lib/user.actions";
 import {redirect} from "next/navigation";
 import SignInWithGoogleButton from "@/components/SignInWithGoogleButton"; // THIS IS FOR APPWRITE
 

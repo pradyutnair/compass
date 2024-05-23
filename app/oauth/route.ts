@@ -1,10 +1,14 @@
 // src/app/oauth/route.js
 
-import { createAdminClient } from "@/lib/server/appwrite";
+import { createAdminClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET({request}: {request: any}) {
+    if (!request || !request.nextUrl) {
+        throw new Error('Invalid request object NIGGA');
+    }
+
     const userId = request.nextUrl.searchParams.get("userId");
     const secret = request.nextUrl.searchParams.get("secret");
 

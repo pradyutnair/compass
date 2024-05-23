@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Link from "next/link";
 import { useState, FormEvent } from 'react';
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SignInWithGoogleButton from "@/components/SignInWithGoogleButton";
 import { Loader2 } from 'lucide-react';
-import { signIn } from "@/lib/user-actions"; // Ensure this path is correct
+import { signIn } from "@/lib/user.actions";
 
 export function LoginForm() {
     const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export function LoginForm() {
             await signIn(formData);
             // Handle successful login, e.g., redirect to dashboard
         } catch (err) {
-            setError('Incorrect email or password. Please try again.');
+            setError('Login failed. Please try again.');
         } finally {
             setLoading(false);
         }

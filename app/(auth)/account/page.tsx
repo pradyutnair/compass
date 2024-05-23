@@ -2,8 +2,8 @@
 
 import {
     createSessionClient,
-} from "@/lib/server/appwrite";
-import { getLoggedInUser } from "@/lib/user-actions";
+} from "@/lib/appwrite";
+import { getLoggedInUser } from "@/lib/user.actions";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 

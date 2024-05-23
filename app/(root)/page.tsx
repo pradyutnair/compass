@@ -2,7 +2,7 @@ import HeaderBox from "@/components/HeaderBox";
 import TotalBalanceBox from "@/components/TotalBalanceBox";
 import React from "react";
 import RightSidebar from "@/components/RightSidebar";
-import {getLoggedInUser} from "@/lib/user-actions";
+import {getLoggedInUser} from "@/lib/user.actions";
 import {parseStringify} from "@/lib/utils";
 import {redirect} from "next/navigation";
 
