@@ -13,7 +13,7 @@ const SideBar = ({user}: SiderbarProps) => {
         <section className={"sidebar"}>
             <nav className={"flex flex-col gap-4"}>
                 <Link href={"/"}
-                      className={"mb-12 cursor-pointer items-center flex gap-2"}>
+                      className={"mb-12 cursor-pointer items-center flex gap-1"}>
                     <Image src={"/icons/logo.svg"}
                            width={32}
                            height={32}
@@ -29,7 +29,7 @@ const SideBar = ({user}: SiderbarProps) => {
                         || pathname.startsWith(`${item.route}/`);
                     return (
                         <Link href={item.route} key={item.label}
-                              className={cn('sidebar-link', {'bg-bank-gradient': isActive})}>
+                              className={cn('sidebar-link-account', {'bg-bank-gradient': isActive})}>
                             <div className={"relative size-6"}>
                                 <Image src={item.imgURL}
                                        fill

@@ -1,12 +1,9 @@
 'use server';
-
-import {createAdminClient, createSessionClient} from "@/lib/appwrite";
+import {createAdminClient, createSessionClient} from "@/lib/server/appwrite";
 import {ID} from "node-appwrite";
 import {cookies} from "next/headers";
 import {parseStringify} from "@/lib/utils";
 import {redirect} from "next/navigation";
-import {red} from "next/dist/lib/picocolors";
-import {revalidatePath} from "next/cache";
 
 export const signIn = async (formData: FormData) => {
     "use server";
@@ -16,24 +13,28 @@ export const signIn = async (formData: FormData) => {
         const password = formData.get("password") as string;
         const response = await account.createEmailPasswordSession(email, password);
         console.log("FUNCTION signIn RESPONSE:", parseStringify(response));
-        revalidatePath("/", "layout");
+
+        // Set the session cookie
+        cookies().set("appwrite-session", response.secret, {
+            path: "/",
+            httpOnly: true,
+            sameSite: "strict",
+            secure: true,
+        });
+
         redirect("/");
 
     } catch (error) {
-        console.error('Error:', error);
+        console.error('SIGN IN Error:', error);
         throw error; // propagate the error to the caller
     }
 }
 
-
 export async function getLoggedInUser() {
     try {
         const { account } = await createSessionClient();
-        const user = await account.get();
-        console.log('User from getLoggedInUser:', user); // Log the user
-        return parseStringify(user);
+        return await account.get();
     } catch (error) {
-        console.error('Error in getLoggedInUser:', error); // Log the error
         return null;
     }
 }

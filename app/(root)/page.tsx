@@ -10,6 +10,9 @@ const Home= async () => {
     //const loggedInold = { firstName: "Pradyut", lastName: "Nair", email:"geeky@gmail.com"}
     const loggedIn = await getLoggedInUser();
     console.log("BOMBOCLAT User logged in: ", parseStringify(loggedIn));
+
+    // Get the first name of the user
+    const firstName = loggedIn?.name.split(" ")[0];
     // if (!loggedIn) redirect("/account")
 
     return (
@@ -19,7 +22,7 @@ const Home= async () => {
                     <HeaderBox
                         type="greeting"
                         title="Welcome,"
-                        user={loggedIn?.name || "Guest"}
+                        user={firstName || "Guest"}
                         subtext="Access your account information and manage your transactions."
                     />
 

@@ -2,7 +2,7 @@
 
 import {
     createSessionClient,
-} from "@/lib/appwrite";
+} from "@/lib/server/appwrite";
 import { getLoggedInUser } from "@/lib/user-actions";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
