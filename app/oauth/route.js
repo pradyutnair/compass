@@ -1,12 +1,13 @@
 // src/app/oauth/route.js
 
-import { createAdminClient } from "@/lib/appwrite";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import {createAdminClient} from "../../lib/appwrite";
+import {cookies} from "next/headers";
+import {NextResponse} from "next/server";
 
-export async function GET({request}: {request: any}) {
+
+export async function GET(request) {
     if (!request || !request.nextUrl) {
-        throw new Error('Invalid request object NIGGA');
+        throw new Error('Invalid request object');
     }
 
     const userId = request.nextUrl.searchParams.get("userId");
@@ -15,12 +16,13 @@ export async function GET({request}: {request: any}) {
     const { account } = await createAdminClient();
     const session = await account.createSession(userId, secret);
 
+     // Set request headers cookies
     cookies().set("appwrite-session", session.secret, {
         path: "/",
         httpOnly: true,
-        sameSite: "strict",
         secure: true,
     });
 
-    return NextResponse.redirect(`${request.nextUrl.origin}/`);
+    return NextResponse.redirect(`${request.nextUrl.origin}/`)
 }
+

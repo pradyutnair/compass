@@ -13,11 +13,12 @@ export async function signUpWithGoogle() {
 
     const redirectUrl = await account.createOAuth2Token(
         OAuthProvider.Google,
-        `${origin}/oauth/`,
+        `${origin}/oauth`,
         `${origin}/error`,
     );
 
     console.log("Redirect URL:", redirectUrl);
 
     return redirect(redirectUrl);
-};
+}
+

@@ -5,8 +5,6 @@ import {ID} from "node-appwrite";
 import {cookies} from "next/headers";
 import {parseStringify} from "@/lib/utils";
 import {redirect} from "next/navigation";
-import {red} from "next/dist/lib/picocolors";
-import {revalidatePath} from "next/cache";
 
 export const signIn = async (formData: FormData) => {
     "use server";
@@ -20,7 +18,6 @@ export const signIn = async (formData: FormData) => {
         cookies().set("appwrite-session", response.secret, {
             path: "/",
             httpOnly: true,
-            sameSite: "strict",
             secure: true,
         });
 

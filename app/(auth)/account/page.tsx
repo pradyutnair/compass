@@ -12,16 +12,16 @@ async function signOut() {
 
     const { account } = await createSessionClient();
 
-    cookies().delete("my-custom-session");
+    cookies().delete("appwrite-session");
     await account.deleteSession("current");
 
-    redirect("/signup");
+    redirect("/sign-up");
 }
 
 export default async function HomePage() {
-    const user = await getLoggedInUser();
+    let user = await getLoggedInUser();
     if (!user) {
-        redirect("/sign-up");
+        user = {email: "loading...", name: "loading...", $id: "loading..."}
     }
 
     return (

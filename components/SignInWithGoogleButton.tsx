@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { signInWithGoogle } from "@/lib/auth-actions";
 import {signUpWithGoogle} from "@/lib/oauth";
 import React from "react";
 import Image from 'next/image';
@@ -11,7 +10,7 @@ const SignInWithGoogleButton = ({type = 'sign-in'}: {type?: string}) => {
 
     if (type === 'sign-in') {
         buttonText = 'Log in with';
-        functionToUse = signInWithGoogle;
+        functionToUse = signUpWithGoogle;
     } else {
         buttonText = 'Sign up with';
         functionToUse = signUpWithGoogle;
