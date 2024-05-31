@@ -32,14 +32,15 @@ const BankCard = ({account, userName, showBalance = true}: CreditCardProps) => {
                 </div>
 
                 <div className="bank-card_icon">
-                    <Image src={"/icons/Paypass.svg"} width={20} height={24} alt={"pay"} />
-                    <Image src={"/icons/mastercard.svg"} width={45} height={32} alt={"mastercard"} className={"margin-left 5"}/>
+                    <Image src={"/icons/Paypass.svg"} width={20} height={24} alt={"pay"}/>
+                    <Image src={"/icons/mastercard.svg"} width={45} height={32} alt={"mastercard"}
+                           className={"margin-left 5"}/>
                 </div>
 
                 <Image src={"/icons/lines.png"} alt={"lines"} width={316} height={190}
                        className={"absolute top-0 left-0"}/>
             </Link>
-        {/*    COPY CARD NUMBER*/}
+            {/*    COPY CARD NUMBER*/}
         </div>
     );
 };

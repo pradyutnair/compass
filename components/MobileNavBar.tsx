@@ -1,13 +1,6 @@
 "use client";
 import React from 'react';
-import {
-    Sheet, SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
+import {Sheet, SheetClose, SheetContent, SheetTrigger,} from "@/components/ui/sheet"
 import Image from "next/image";
 import Link from "next/link";
 import {sidebarLinks} from "@/constants";
@@ -22,14 +15,14 @@ const MobileNav = ({user}: MobileNavProps) => {
             <Sheet>
                 <SheetTrigger>
                     <Image src={"/icons/hamburger.svg"}
-                        width={30}
-                        height={30}
-                        alt={"Menu"}
-                        className={"cursor-pointer"}
+                           width={30}
+                           height={30}
+                           alt={"Menu"}
+                           className={"cursor-pointer"}
                     />
                 </SheetTrigger>
                 <SheetContent side={"left"}
-                className={"border-none bg-white"}>
+                              className={"border-none bg-white"}>
                     <Link href={"/"}
                           className={"cursor-pointer items-center flex gap-1 px-4"}>
                         <Image src={"/icons/logo.svg"}
@@ -43,7 +36,7 @@ const MobileNav = ({user}: MobileNavProps) => {
                         </h1>
                     </Link>
                     <div className={"mobilenav-sheet"}>
-                    <SheetClose asChild>
+                        <SheetClose asChild>
                             <nav className={"flex-h-full flex-col gap-6 pt-16 text-white"}>
                                 {sidebarLinks.map((item) => {
                                     const isActive = pathname === item.route

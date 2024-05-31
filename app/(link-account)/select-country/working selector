@@ -1,0 +1,41 @@
+'use client';
+import {useState} from "react";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import {createGoCardlessClient} from "@/lib/gocardless";
+import europeanCountries from "./europeanCountries";
+
+const CountrySelect = () => {
+    const [selectedCountry, setSelectedCountry] = useState("");
+    const [selectedInstitution, setSelectedInstitution ] = useState("");
+    return (
+        <div className="w-full max-w-md mx-auto mt-10">
+            <h1 className="text-3xl font-bold text-center mb-6 font-inter">Bank Selection</h1>
+            {/*Add vertical spacing*/}
+            <div className="mb-20"></div>
+            <Select onValueChange={(value) => setSelectedCountry(value)}>
+                <SelectTrigger>
+                    <SelectValue placeholder="Select a country"/>
+                </SelectTrigger>
+                <SelectContent
+                    className="shadow-lg border border-gray-200 rounded-md bg-white divide-y divide-gray-200">
+                    {europeanCountries.map((country) => (
+                        <SelectItem key={country.code} value={country.code}
+                                    className="flex items-center py-3 px-4 hover:bg-gray-100 cursor-pointer">
+                            <img
+                                src={country.flag}
+                                alt={country.name}
+                                className="inline-block w-7 h-5 mr-2"
+                            />
+                            <span className="font-inter px-4 font-size 12">{country.name}</span>
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+            {/* Display selected country and institution */}
+            {selectedCountry && <p className="mt-4 text-center">Selected Country: {selectedCountry}</p>}
+
+        </div>
+    );
+};
+
+export default CountrySelect;

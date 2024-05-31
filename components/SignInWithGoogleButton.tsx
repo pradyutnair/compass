@@ -1,10 +1,10 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {signUpWithGoogle} from "@/lib/oauth";
 import React from "react";
 import Image from 'next/image';
 
-const SignInWithGoogleButton = ({type = 'sign-in'}: {type?: string}) => {
+const SignInWithGoogleButton = ({type = 'sign-in'}: { type?: string }) => {
     let buttonText;
     let functionToUse;
 
@@ -25,7 +25,7 @@ const SignInWithGoogleButton = ({type = 'sign-in'}: {type?: string}) => {
             }}
         >
             {buttonText}
-            <Image src="/icons/google.svg" alt="Google logo" width={24} height={24} className="ml-2" />
+            <Image src="/icons/google.svg" alt="Google logo" width={24} height={24} className="ml-2"/>
         </Button>
     );
 };

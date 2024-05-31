@@ -4,9 +4,8 @@ import React from "react";
 import RightSidebar from "@/components/RightSidebar";
 import {getLoggedInUser} from "@/lib/user.actions";
 import {parseStringify} from "@/lib/utils";
-import {redirect} from "next/navigation";
 
-const Home= async () => {
+const Home = async () => {
     //const loggedInold = { firstName: "Pradyut", lastName: "Nair", email:"geeky@gmail.com"}
     const loggedIn = await getLoggedInUser();
     console.log("BOMBOCLAT User logged in: ", parseStringify(loggedIn));

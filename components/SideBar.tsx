@@ -1,13 +1,13 @@
 'use client'
 
-import { sidebarLinks } from '@/constants'
-import { cn } from '@/lib/utils'
+import {sidebarLinks} from '@/constants'
+import {cn} from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import {usePathname} from 'next/navigation'
 import Footer from './Footer'
 
-const Sidebar = ({ user }: SiderbarProps) => {
+const Sidebar = ({user}: SiderbarProps) => {
     const pathname = usePathname();
 
     return (
@@ -29,7 +29,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
 
                     return (
                         <Link href={item.route} key={item.label}
-                              className={cn('sidebar-link', { 'bg-bank-gradient': isActive })}
+                              className={cn('sidebar-link', {'bg-bank-gradient': isActive})}
                         >
                             <div className="relative size-6">
                                 <Image
@@ -41,7 +41,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
                                     })}
                                 />
                             </div>
-                            <p className={cn("sidebar-label", { "!text-white": isActive })}>
+                            <p className={cn("sidebar-label", {"!text-white": isActive})}>
                                 {item.label}
                             </p>
                         </Link>
@@ -51,7 +51,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
                 USER
             </nav>
 
-            <Footer user={user} />
+            <Footer user={user}/>
         </section>
     )
 }

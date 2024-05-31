@@ -1,16 +1,14 @@
 // src/app/account/page.jsx
 
-import {
-    createSessionClient,
-} from "@/lib/appwrite";
-import { getLoggedInUser } from "@/lib/user.actions";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import {createSessionClient,} from "@/lib/appwrite";
+import {getLoggedInUser} from "@/lib/user.actions";
+import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
 
 async function signOut() {
     "use server";
 
-    const { account } = await createSessionClient();
+    const {account} = await createSessionClient();
 
     cookies().delete("appwrite-session");
     await account.deleteSession("current");

@@ -1,21 +1,15 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
 // import { signup } from "@/lib/auth-actions";        THIS IS FOR SUPABASE
-import {getLoggedInUser, signUpWithEmail} from "@/lib/user.actions";
-import {redirect} from "next/navigation";
+import {signUpWithEmail} from "@/lib/user.actions";
 import SignInWithGoogleButton from "@/components/SignInWithGoogleButton"; // THIS IS FOR APPWRITE
 
 // Sign up form
 export function SignUpForm() {
+
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>

@@ -3,22 +3,22 @@ import Image from "next/image";
 import {logoutAccount} from "@/lib/user.actions";
 import {useRouter} from "next/navigation";
 
-const Footer = ({user, type ='desktop'}: FooterProps) => {
+const Footer = ({user, type = 'desktop'}: FooterProps) => {
     const router = useRouter();
 
     const handleLogout = async () => {
         const loggedOut = await logoutAccount();
-        if(loggedOut) router.push('/login');
+        if (loggedOut) router.push('/login');
     }
     return (
         <footer className={'footer'}>
-            <div className={type === 'mobile'? 'footer_name-mobile' : 'footer_name'}>
+            <div className={type === 'mobile' ? 'footer_name-mobile' : 'footer_name'}>
                 <p className={'text-cl font-bold text-gray-700'}>
                     {user?.name[0]}
                 </p>
             </div>
 
-            <div className={type === 'mobile'? 'footer_email-mobile' : 'footer_email'}>
+            <div className={type === 'mobile' ? 'footer_email-mobile' : 'footer_email'}>
                 <h1 className={"text-14 truncate text-gray-700 font-semibold"}>
                     {user?.name}
                 </h1>
@@ -26,9 +26,9 @@ const Footer = ({user, type ='desktop'}: FooterProps) => {
                     {user?.email}
                 </p>
             </div>
-        <div className={"footer_image"} onClick={handleLogout}>
-            <Image src={"/icons/logout.svg"} fill alt={"Logout"}/>
-        </div>
+            <div className={"footer_image"} onClick={handleLogout}>
+                <Image src={"/icons/logout.svg"} fill alt={"Logout"}/>
+            </div>
         </footer>
     );
 };

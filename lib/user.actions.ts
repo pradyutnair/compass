@@ -9,7 +9,7 @@ import {redirect} from "next/navigation";
 export const signIn = async (formData: FormData) => {
     "use server";
     try {
-        const { account } = await createAdminClient();
+        const {account} = await createAdminClient();
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
         const response = await account.createEmailPasswordSession(email, password);
@@ -32,7 +32,7 @@ export const signIn = async (formData: FormData) => {
 
 export async function getLoggedInUser() {
     try {
-        const { account } = await createSessionClient();
+        const {account} = await createSessionClient();
         const user = await account.get();
         console.log('User from getLoggedInUser:', user); // Log the user
         return parseStringify(user);
@@ -58,7 +58,7 @@ export async function signUpWithEmail(formData: FormData) {
     }
 
     // Create a new account
-    const { account } = await createAdminClient();
+    const {account} = await createAdminClient();
 
     // Create a new account with the provided email, password, and name
     await account.create(ID.unique(), email, password, name);
@@ -79,6 +79,7 @@ export const logoutAccount = async () => {
         const {account} = await createSessionClient();
         cookies().delete("appwrite-session");
         await account.deleteSession("current");
+        redirect("/login");
     } catch (error) {
         console.error('Error:', error);
         throw error; // propagate the error to the caller

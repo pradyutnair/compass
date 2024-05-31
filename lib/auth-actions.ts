@@ -14,7 +14,7 @@ export async function login(formData: FormData) {
         password: formData.get("password") as string,
     };
 
-    const { error } = await supabase.auth.signInWithPassword(data);
+    const {error} = await supabase.auth.signInWithPassword(data);
 
     if (error) {
         redirect("/error");
@@ -42,7 +42,7 @@ export async function signup(formData: FormData) {
         },
     };
 
-    const { error } = await supabase.auth.signUp(data);
+    const {error} = await supabase.auth.signUp(data);
 
     if (error) {
         redirect("/error");
@@ -54,7 +54,7 @@ export async function signup(formData: FormData) {
 
 export async function signout() {
     const supabase = createClient();
-    const { error } = await supabase.auth.signOut();
+    const {error} = await supabase.auth.signOut();
     if (error) {
         console.log(error);
         redirect("/error");
@@ -65,7 +65,7 @@ export async function signout() {
 
 export async function signInWithGoogle() {
     const supabase = createClient();
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const {data, error} = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
             queryParams: {
