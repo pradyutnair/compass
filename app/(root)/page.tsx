@@ -28,17 +28,14 @@ const Home = async () => {
                     <TotalBalanceBox
                         accounts={[]}
                         totalBanks={1}
-                        totalCurrentBalance={1250.32}
+                        totalCurrentBalance={12500.32}
                     />
 
                 </header>
                 RECENT TRANSACTIONS
 
             </div>
-            <RightSidebar user={loggedIn}
-                          transactions={[]}
-                          banks={[{currentBalance: 1100.23}, {currentBalance: 150.09}]}
-            />
+
         </section>
     );
 }

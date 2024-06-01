@@ -58,10 +58,32 @@ export async function signUpWithEmail(formData: FormData) {
     }
 
     // Create a new account
-    const {account} = await createAdminClient();
+    const {account, database} = await createAdminClient();
+
+    // Unique ID for the user
+    const userId = ID.unique();
 
     // Create a new account with the provided email, password, and name
-    await account.create(ID.unique(), email, password, name);
+    await account.create(userId, email, password, name);
+
+    // Create a new document in the database
+    const newUser = await database.createDocument(
+        process.env.APPWRITE_DATABASE_ID!,
+        process.env.APPWRITE_USER_COLLECTION_ID!,
+        ID.unique(), // Unique ID for the document
+        {
+            userId: userId, // User ID
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+        }
+    );
+
+    if (!newUser) {
+        throw new Error('Failed to write user to database');
+    }
+
+    // Initialize the session
     const session = await account.createEmailPasswordSession(email, password);
 
     cookies().set("appwrite-session", session.secret, {
@@ -71,7 +93,7 @@ export async function signUpWithEmail(formData: FormData) {
         secure: true,
     });
 
-    redirect("/");
+    redirect("/select-country");
 }
 
 export const logoutAccount = async () => {

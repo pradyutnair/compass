@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 
+import {Account} from "node-appwrite";
+
 declare type SearchParamProps = {
     params: { [key: string]: string };
     searchParams: { [key: string]: string | string[] | undefined };
@@ -138,9 +140,15 @@ declare type NewDwollaCustomerParams = {
 };
 
 declare interface CreditCardProps {
-    account: Account;
-    userName: string;
-    showBalance?: boolean;
+    // account: Account,
+    balances: {
+        amount: number;
+        currency: string;
+    };
+    userName: string,
+    showBalance?: boolean,
+    bankName?: string,
+    bankLogo?: any
 }
 
 declare interface BankInfoProps {
@@ -330,4 +338,18 @@ declare interface getBankByAccountIdProps {
 }
 
 declare module 'nordigen-node';
+
+// types.d.ts
+export interface BankData {
+    requisitionId: string;
+    bankName: string;
+    bankLogo: string;
+    balances: Record<string, Balance>;
+}
+
+export interface Balance {
+    amount: number;
+    currency: string;
+}
+
 

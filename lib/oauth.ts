@@ -17,7 +17,7 @@ export async function signUpWithGoogle() {
         `${origin}/error`,
     );
 
-    console.log("Redirect URL:", redirectUrl);
+    console.log("OAUTH Redirect URL:", redirectUrl);
 
     return redirect(redirectUrl);
 }

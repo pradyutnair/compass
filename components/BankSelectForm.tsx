@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {Loader2} from "lucide-react";
 
 export default function SelectBankForm() {
     const [institutions, setInstitutions] = useState([])
-    const [selectedInstitution, setSelectedInstitution] = useState("")
+    const [selectedInstitution, setSelectedInstitution] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const router = useRouter()
@@ -24,7 +25,8 @@ export default function SelectBankForm() {
     }, [])
 
     const handleInstitutionChange = (value: string) => {
-        setSelectedInstitution(value)
+        const institution = institutions.find((inst: any) => inst.id === value)
+        setSelectedInstitution(institution)
     }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -37,12 +39,15 @@ export default function SelectBankForm() {
         setError(null)
 
         try {
-            const response = await fetch('/api/initSession', {
+            const response = await fetch('/api/endUserAgreement', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ institutionId: selectedInstitution })
+                body: JSON.stringify({
+                    institutionId: selectedInstitution.id,
+                    logo: selectedInstitution.logo
+                })
             })
 
             if (!response.ok) {
@@ -75,7 +80,7 @@ export default function SelectBankForm() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid gap-4">
                         <div className="grid gap-2">
-                            <Select onValueChange={handleInstitutionChange} defaultValue={selectedInstitution}>
+                            <Select onValueChange={handleInstitutionChange} defaultValue={selectedInstitution?.id}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select your bank" />
                                 </SelectTrigger>
@@ -99,10 +104,14 @@ export default function SelectBankForm() {
                         {error && <div className="text-red-600 text-center">{error}</div>}
                         <Button
                             type="submit"
-                            className="w-full text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-600 disabled:opacity-50"
+                            className="w-full text-blue-600 border border-blue-600 hover:bg-blue-600 hover:text-white disabled:opacity-50"
                             disabled={loading}
                         >
-                            {loading ? 'Loading...' : 'Submit'}
+                            {loading ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                'Submit'
+                            )}
                         </Button>
                     </div>
                 </form>
