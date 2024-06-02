@@ -383,4 +383,18 @@
     .sidebar-label {
         @apply text-16 font-semibold text-black-2 max-xl:hidden;
     }
+    /* Custom styles for the table header */
+    .custom-header-row {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .custom-header-cell {
+        padding: 16px;
+        font-size: 14px;
+        color: #495057;
+    }
+
 }

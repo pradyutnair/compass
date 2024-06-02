@@ -7,7 +7,7 @@ import Link from 'next/link'
 import {usePathname} from 'next/navigation'
 import Footer from './Footer'
 
-const Sidebar = ({user}: SiderbarProps) => {
+const Sidebar = ({user}: SidebarProps) => {
     const pathname = usePathname();
 
     return (
@@ -21,7 +21,7 @@ const Sidebar = ({user}: SiderbarProps) => {
                         alt="Horizon logo"
                         className="size-[24px] max-xl:size-14"
                     />
-                    <h1 className="sidebar-logo">Horizon</h1>
+                    <h1 className="sidebar-logo">Compass</h1>
                 </Link>
 
                 {sidebarLinks.map((item) => {

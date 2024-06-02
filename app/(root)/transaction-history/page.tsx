@@ -1,11 +1,13 @@
 import React from 'react';
+import { TransactionsTable } from '@/components/TransactionsTable';
 
-const TransactionHistory = () => {
+const TransactionsPage = () => {
     return (
-        <div>
-
+        <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4 font-inter">Your Transactions</h1>
+            <TransactionsTable />
         </div>
     );
 };
 
-export default TransactionHistory;
+export default TransactionsPage;

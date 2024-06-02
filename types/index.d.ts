@@ -65,24 +65,24 @@ declare type Account = {
     sharableId: string;
 };
 
-declare type Transaction = {
-    id: string;
-    $id: string;
-    name: string;
-    paymentChannel: string;
-    type: string;
-    accountId: string;
-    amount: number;
-    pending: boolean;
-    category: string;
-    date: string;
-    image: string;
-    type: string;
-    $createdAt: string;
-    channel: string;
-    senderBankId: string;
-    receiverBankId: string;
-};
+// declare type Transaction = {
+//     id: string;
+//     $id: string;
+//     name: string;
+//     paymentChannel: string;
+//     type: string;
+//     accountId: string;
+//     amount: number;
+//     pending: boolean;
+//     category: string;
+//     date: string;
+//     image: string;
+//     type: string;
+//     $createdAt: string;
+//     channel: string;
+//     senderBankId: string;
+//     receiverBankId: string;
+// };
 
 declare type Bank = {
     $id: string;
@@ -337,7 +337,7 @@ declare interface getBankByAccountIdProps {
     accountId: string;
 }
 
-declare module 'nordigen-node';
+
 
 // types.d.ts
 export interface BankData {
@@ -352,4 +352,38 @@ export interface Balance {
     currency: string;
 }
 
+export type Transaction = {
+    transactionId?: string;
+    debtorName?: string;
+    debtorAccount?: {
+        iban: string;
+    };
+    transactionAmount: {
+        currency: string;
+        amount: string;
+    };
+    creditorName?: string;
+    creditorAccount?: string;
+    bankTransactionCode?: string;
+    bookingDate?: string;  // Date as string
+    valueDate: string;     // Date as string
+    remittanceInformationUnstructured?: string[];
+    remittanceInformationUnstructuredArray?: string[];
+    Year?: number;
+    Month?: number;
+    Week?: number;
+    Day?: number;
+    DayOfWeek?: number;
+    Payee?: string;
+    Bank?: string;
 
+};
+
+export type TransactionsResponse = {
+    transactions: {
+        booked: Transaction[];
+        pending: Transaction[];
+    };
+};
+
+declare module 'nordigen-node';
