@@ -233,13 +233,13 @@ export function TransactionsTable() {
 
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <p className={"px-4"}>Loading...</p>;
     }
 
     console.log(transactions);
 
     return (
-        <div className="flex flex-col h-screen max-h-[650px]">
+        <div className="flex flex-col max-h-[600px] max-w-full overflow-hidden">
             <div className="flex items-center py-4 px-1">
                 <Input
                     placeholder="Filter Payee..."
@@ -266,7 +266,7 @@ export function TransactionsTable() {
                                         className="capitalize"
                                         checked={column.getIsVisible()}
                                         onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
+                                            column.toggleVisibility(value)
                                         }
                                     >
                                         {column.id}

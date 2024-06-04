@@ -21,7 +21,7 @@ export default function ThemeToggle({}: CompProps) {
                     <span className="sr-only">Toggle theme</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className={"bg-opacity-100"}>
                 <DropdownMenuItem onClick={() => setTheme('light')}>
                     Light
                 </DropdownMenuItem>

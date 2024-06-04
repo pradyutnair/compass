@@ -11,11 +11,11 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import {getLoggedInUser} from "@/lib/user.actions";
 
-export function UserNav() {
-    const user = await getLoggedInUser();
-    if (user) {
+export  function UserNav(userInfo: any) {
+    console.log("User NAV user: ", userInfo)
+    let user1 = userInfo.user;
+    if (user1) {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -30,9 +30,9 @@ export function UserNav() {
                         <Avatar className="h-8 w-8">
                             <AvatarImage
                                 src={"icons/a-coffee.svg"}
-                                alt={user.name ?? ''}
+                                alt={user1.name ?? ''}
                             />
-                            <AvatarFallback>{user.name.[0] ?? ''}</AvatarFallback>
+                            <AvatarFallback>{user1.name[0] ?? ''}</AvatarFallback>
                         </Avatar>
                     </Button>
                 </DropdownMenuTrigger>
@@ -40,14 +40,14 @@ export function UserNav() {
                     <DropdownMenuLabel className="font-normal">
                         <div className="flex flex-col space-y-1">
                             <p className="text-sm font-medium leading-none">
-                                {user.name}
+                                {user1.name}
                             </p>
                             <p className="text-xs leading-none text-muted-foreground">
-                                {user.email}
+                                {user1.email}
                             </p>
                         </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator/>
                     <DropdownMenuGroup>
                         <DropdownMenuItem>
                             Profile
@@ -63,7 +63,7 @@ export function UserNav() {
                         </DropdownMenuItem>
                         <DropdownMenuItem>New Team</DropdownMenuItem>
                     </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator/>
                 </DropdownMenuContent>
             </DropdownMenu>
         );
