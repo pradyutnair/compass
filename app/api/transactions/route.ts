@@ -15,7 +15,7 @@ export const GET = async (req: NextRequest) => {
                 {
                     requisitionIds: [requisitionId],
                     bankNames: [bankName],
-                    dateFrom: "2024-06-01"
+                    //dateFrom: "2024-06-01"
                 }
             );
 

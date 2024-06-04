@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,9 +21,6 @@ import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -36,7 +33,8 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Transaction } from "@/types";
-import {formatAmount} from "@/lib/utils";
+import {formatAmount, sortByDate} from "@/lib/utils";
+import dayjs from "dayjs";
 
 export const columns: ColumnDef<Transaction>[] = [
     {
@@ -61,57 +59,38 @@ export const columns: ColumnDef<Transaction>[] = [
         enableSorting: false,
         enableHiding: false,
     },
-    // {
-    //     accessorKey: "creditorName",
-    //     id: "Creditor Name",
-    //     header: "Creditor Name",
-    // },
-    // Change onClick handler for sorting to use the correct accessor key
     {
         accessorKey: "Payee",
         id: "Payee",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    // Pass the accessor key as the third argument to toggleSorting
-
-                >
-                    Payee
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        }
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Payee
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
-
     {
         accessorKey: "transactionAmount.amount",
         header: "Amount",
-        cell: ({row}) => {
+        id: "Amount",
+        cell: ({ row }) => {
             const amount = row.original.transactionAmount.amount;
             const currency = row.original.transactionAmount.currency;
 
             const displayAmount = formatAmount(amount, currency);
             return (
-                <div className={`flex flex-col font-medium ${amount[0] === '-' ? 'text-[#f04438]'
-                    : 'text-[#039855]'}`} style={{ whiteSpace: 'nowrap' }}>
+                <div className={`flex flex-col font-medium ${amount[0] === '-' ? 'text-[#f04438]' : 'text-[#039855]'}`} style={{ whiteSpace: 'nowrap' }}>
                     {displayAmount}
                 </div>
             );
         },
     },
-    // {
-    //     accessorKey: "transactionAmount.currency",
-    //     header: "Currency",
-    //     // cell: ({ row }) => (
-    //     //     <div className="text-left">
-    //     //         {row.getValue("transactionAmount.currency")}
-    //     //     </div>
-    //     // ),
-    // },
     {
         accessorKey: "bookingDate",
+        id: "Payment Date",
         header: ({ column }) => {
             return (
                 <Button
@@ -122,11 +101,10 @@ export const columns: ColumnDef<Transaction>[] = [
                     Payment Date
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
-            )
+            );
         },
-        // Center cell content
         cell: ({ row }) => {
-            const bookingDate = new Date(row.getValue("bookingDate"));
+            const bookingDate = new Date(row.getValue("Payment Date"));
             const formattedDate = bookingDate.toLocaleDateString('en-US', {
                 day: '2-digit',
                 month: 'short',
@@ -137,29 +115,36 @@ export const columns: ColumnDef<Transaction>[] = [
                     {formattedDate}
                 </div>
             );
+        },
+        sortingFn: (rowA, rowB, columnId) => {
+            const dateA = dayjs(rowA.getValue(columnId));
+            const dateB = dayjs(rowB.getValue(columnId));
+            return dateB.unix() - dateA.unix();
         }
-
     },
+
+
+
     {
         accessorKey: "Bank",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    className="text-left px--5"
-                >
-                    Bank
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        }
+        id: "Bank",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                className="text-left px--5"
+            >
+                Bank
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
     },
     {
         accessorKey: "remittanceInformationUnstructuredArray",
+        id: "Description",
         header: "Description",
         cell: ({ row }) => {
-            const remittanceInformation = row.getValue("remittanceInformationUnstructuredArray") as string[];
+            const remittanceInformation = row.getValue("Description") as string[];
             return (
                 <div className="flex flex-col justify-center" style={{ wordWrap: 'break-word', maxWidth: '200px' }}>
                     {remittanceInformation.map((item, index) => (
@@ -168,9 +153,9 @@ export const columns: ColumnDef<Transaction>[] = [
                 </div>
             );
         },
-    }
+    },
 ];
-// Define a constant key for storing data in browser storage
+
 const STORAGE_KEY = "transactionsData";
 
 export function TransactionsTable() {
@@ -182,22 +167,32 @@ export function TransactionsTable() {
     const [rowSelection, setRowSelection] = React.useState({});
 
     useEffect(() => {
-        // Check if data exists in browser storage
-        //const storedData = sessionStorage.getItem(STORAGE_KEY);
-        const storedData = null;
+        let storedData;
+        storedData= sessionStorage.getItem(STORAGE_KEY);
+        //storedData = null;
         if (storedData) {
-            // If data exists, parse and set it as transactions
+            // -------------------------------------------------------------
+            // Sort stored data by booking date
+            storedData = JSON.stringify(JSON.parse(storedData).sort((a: { bookingDate: string | number | Date; }, b: { bookingDate: string | number | Date; }) => {
+                return new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime();
+            }));
+            // -------------------------------------------------------------
             setTransactions(JSON.parse(storedData));
             setLoading(false);
         } else {
-            // If no data in storage, fetch from API
             const fetchTransactions = async () => {
                 try {
                     const response = await fetch("/api/transactions");
                     const data: Transaction[] = await response.json();
-                    // Set transactions state
+                    // -------------------------------------------------------------
+                    // Sort data by booking date
+                    data.sort((a: Transaction, b: Transaction) => {
+                        const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : -Infinity;
+                        const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : -Infinity;
+                        return dateB - dateA;
+                    });
+                    // -------------------------------------------------------------
                     setTransactions(data);
-                    // Store data in browser storage
                     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
                 } catch (error) {
                     console.error("Error fetching transactions:", error);
@@ -208,8 +203,7 @@ export function TransactionsTable() {
 
             fetchTransactions();
         }
-    }, []); // Empty dependency array ensures this effect runs only once on component mount
-
+    }, []);
 
     const table = useReactTable({
         data: transactions,
@@ -223,41 +217,42 @@ export function TransactionsTable() {
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
         state: {
-            //sorting: [{id: 'bookingDate', desc:true}], causes some pagination error
             sorting,
             columnFilters,
             columnVisibility,
             rowSelection,
         },
+        initialState: {
+            sorting: [{ id: 'Payment Date', desc: true }],
+            pagination: {
+                pageSize: 7, // Default number of rows per page
+            },
+        },
     });
+
 
 
     if (loading) {
         return <p>Loading...</p>;
     }
 
-    const console_data = sessionStorage.getItem(STORAGE_KEY);
     console.log(transactions);
 
     return (
-        // Ensure there is no vertical overflow
-        <div className="overflow-hidden w-full">
+        <div className="flex flex-col h-screen max-h-[650px]">
             <div className="flex items-center py-4 px-1">
                 <Input
-                    placeholder="Filter creditor names..."
+                    placeholder="Filter Payee..."
                     value={(table.getColumn("Payee")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("Payee")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
-
-
-
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDown className="ml-2 h-4 w-4" />
+                            Columns <ChevronDown className="ml-2 h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -281,23 +276,21 @@ export function TransactionsTable() {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-md border overflow-y-hidden max-h-[600px]">
+            <div className="flex-1 overflow-y-auto">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className={"custom-header-row"}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    );
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>

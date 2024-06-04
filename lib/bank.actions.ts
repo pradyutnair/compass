@@ -128,6 +128,7 @@ export const getGCTransactions = async ({ requisitionIds, bankNames, dateFrom, d
     // Fetch transactions concurrently for all requisition IDs
     const transactionsPromises = requisitionIds.map(async (requisitionId, index) => {
         const bankName = bankNames ? bankNames[index] : undefined;
+        console.log(`Fetching transactions for requisition ID ${requisitionId} and bank ${bankName}`);
         const accounts = await getAccounts({ requisitionIds: [requisitionId] });
 
         if (!accounts) {
@@ -156,7 +157,7 @@ export const getGCTransactions = async ({ requisitionIds, bankNames, dateFrom, d
     allTransactions = allTransactionsArrays.flat();
 
     console.log(`Retrieved ${allTransactions.length} transactions`);
-    console.log(allTransactions);
+    //console.log(allTransactions);
 
     return allTransactions;
 };
@@ -170,6 +171,7 @@ const checkLatestTransaction = async (): Promise<string> => {
 
 
 const applyDataCorrections = (transactions: Transaction[], bankName?: string): Transaction[] => {
+    console.log(`Applying data corrections to ${transactions.length} transactions for ${bankName}`);
     // Check if the transactions array contains data
     if (!Array.isArray(transactions) || transactions.length === 0) {
         throw new Error("transactions must be a non-empty array");
@@ -206,13 +208,16 @@ const applyDataCorrections = (transactions: Transaction[], bankName?: string): T
         const currency = transactionAmount.currency;
 
         // Convert bookingDate to Date object and extract date parts
-        const bookingDateObj = dayjs(bookingDate);
-        dayjs.extend(require('dayjs/plugin/weekOfYear'))
+        // Convert bookingDate to Date object and extract date parts
+        let bookingDateObj;
+        bookingDateObj = dayjs(bookingDate);
+        dayjs.extend(require('dayjs/plugin/weekOfYear'));
         const year = bookingDateObj.year();
         const month = bookingDateObj.month() + 1; // month() is 0-indexed in dayjs
         const week = bookingDateObj.week(); // Use  week()
         const day = bookingDateObj.date();
         const dayOfWeek = bookingDateObj.day();
+
 
         // Determine the first and second columns for payee information
         const firstColumn = creditorName ?? debtorName ?? '';
@@ -256,11 +261,16 @@ const applyDataCorrections = (transactions: Transaction[], bankName?: string): T
                 Day: day,
                 DayOfWeek: dayOfWeek,
                 Payee: payee,
-                Bank: bankName
+                Bank: bankName,
+                remittanceInformationUnstructuredArray: [remittanceInfo]
             };
             correctedTransactions.push(correctedTransaction);
         }
     });
+
+    // Sort the transactions by booking date in descending order
+    correctedTransactions.sort((a, b) => dayjs(b.bookingDate).unix() - dayjs(a.bookingDate).unix());
+
 
     return correctedTransactions;
 };

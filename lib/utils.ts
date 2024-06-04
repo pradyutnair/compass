@@ -196,3 +196,13 @@ export const getTransactionStatus = (date: Date) => {
 
     return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+export function sortByDate(storedData: any ) {
+    if (!storedData) {
+        return null;
+    }
+
+    return storedData.sort((a, b) => {
+        return new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime();
+    });
+}
