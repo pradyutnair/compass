@@ -65,7 +65,7 @@ export const formatDateTime = (dateString: Date) => {
     };
 };
 
-export function formatAmount(amount: number, currency?: string): string {
+export function formatAmount(amount: string, currency?: string): string {
     if (!currency) {
         let currency = "EUR";
     }

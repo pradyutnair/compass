@@ -1,24 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTransactions, getRequisitions } from '@/lib/bank.actions';
+import { getGCTransactions, getRequisitions } from '@/lib/bank.actions';
 
 export const GET = async (req: NextRequest) => {
     try {
         // Get the requisition details including requisitionId
-        const { requisitionId } = await getRequisitions();
+        const requisitionData = await getRequisitions();
 
-        if (!requisitionId) {
-            // Throw an error if the requisitionId is not found
-            throw new Error('Requisition ID not found');
+        // Initialize an empty array to hold all transactions
+        let allTransactions: any[] = [];
 
+        for (let { requisitionId, bankName } of requisitionData) {
+            // Fetch transactions using the retrieved requisitionId
+            const transactions = await getGCTransactions(
+                {
+                    requisitionIds: [requisitionId],
+                    bankNames: [bankName],
+                    dateFrom: "2024-06-01"
+                }
+            );
+
+            // Concatenate the transactions to the allTransactions array
+            allTransactions = allTransactions.concat(transactions);
         }
 
-        // Fetch transactions using the retrieved requisitionId
-        const transactions = await getTransactions({
-                                                                    requisitionId,
-                                                                });
-
         // Return the transactions as the response body
-        return NextResponse.json(transactions);
+        return NextResponse.json(allTransactions);
 
     } catch (error) {
         console.error('Error fetching transactions:', error);

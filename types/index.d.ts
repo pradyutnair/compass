@@ -142,7 +142,7 @@ declare type NewDwollaCustomerParams = {
 declare interface CreditCardProps {
     // account: Account,
     balances: {
-        amount: number;
+        amount: string;
         currency: string;
     };
     userName: string,
@@ -340,6 +340,7 @@ declare interface getBankByAccountIdProps {
 
 
 // types.d.ts
+// types/index.d.ts
 export interface BankData {
     requisitionId: string;
     bankName: string;
@@ -348,7 +349,7 @@ export interface BankData {
 }
 
 export interface Balance {
-    amount: number;
+    amount: string;
     currency: string;
 }
 
@@ -385,5 +386,15 @@ export type TransactionsResponse = {
         pending: Transaction[];
     };
 };
+
+export interface NavItem {
+    title: string;
+    href?: string;
+    disabled?: boolean;
+    external?: boolean;
+    icon?: keyof typeof Icons;
+    label?: string;
+    description?: string;
+}
 
 declare module 'nordigen-node';

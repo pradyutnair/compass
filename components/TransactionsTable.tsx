@@ -142,7 +142,18 @@ export const columns: ColumnDef<Transaction>[] = [
     },
     {
         accessorKey: "Bank",
-        header: "Bank",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className="text-left px--5"
+                >
+                    Bank
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        }
     },
     {
         accessorKey: "remittanceInformationUnstructuredArray",
@@ -172,8 +183,8 @@ export function TransactionsTable() {
 
     useEffect(() => {
         // Check if data exists in browser storage
-        const storedData = sessionStorage.getItem(STORAGE_KEY);
-        //const storedData = null;
+        //const storedData = sessionStorage.getItem(STORAGE_KEY);
+        const storedData = null;
         if (storedData) {
             // If data exists, parse and set it as transactions
             setTransactions(JSON.parse(storedData));
@@ -229,8 +240,9 @@ export function TransactionsTable() {
     console.log(transactions);
 
     return (
-        <div className="w-full">
-            <div className="flex items-center py-4">
+        // Ensure there is no vertical overflow
+        <div className="overflow-hidden w-full">
+            <div className="flex items-center py-4 px-1">
                 <Input
                     placeholder="Filter creditor names..."
                     value={(table.getColumn("Payee")?.getFilterValue() as string) ?? ""}
@@ -269,7 +281,7 @@ export function TransactionsTable() {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <div className="rounded-md border overflow-y-auto max-h-[600px]">
+            <div className="rounded-md border overflow-y-hidden max-h-[600px]">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
